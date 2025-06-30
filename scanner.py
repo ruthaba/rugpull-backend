@@ -40,7 +40,10 @@ def predict_next_dev_dump(transfers):
         return None
 
     hours = round(avg_seconds / 3600, 1)
+    if hours < 0.5:
+        return "🕒 Prediction: Dev wallets are extremely active — expect another dump **within the hour**."
     return f"🕒 Prediction: Devs typically move funds every ~{hours} hours. Watch out soon."
+
 
 def check_liquidity_drop(contract_address):
     try:
