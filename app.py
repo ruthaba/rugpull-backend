@@ -24,24 +24,38 @@ def analyze():
 def get_trending_tokens():
     try:
         url = "https://public-api.dextools.io/trending/pairs?chain=ether&interval=1h"
-        res = requests.get(url, headers={"accept": "application/json"})
+        headers = {
+            "accept": "application/json",
+            "origin": "https://www.dextools.io",
+            "referer": "https://www.dextools.io/"
+        }
+        res = requests.get(url, headers=headers)
         res.raise_for_status()
         raw = res.json()
-        
-        print("🧪 RAW DEXTOOLS DATA:", raw)  # <--- Add this
+
+        print("🧪 RAW DEXTOOLS RESPONSE:", raw)
 
         data = raw.get("data", [])
-        tokens = []
+        if not data:
+            print("❌ DexTools returned no data.")
+            return jsonify({"error": "No trending data returned"}), 500
 
+        tokens = []
         for pair in data:
             token = pair.get("token")
             if token and token.get("contract"):
                 tokens.append(token["contract"])
 
+        if not tokens:
+            print("⚠️ Trending pairs found, but no contracts extracted.")
+            return jsonify({"error": "No token contracts found"}), 500
+
         return jsonify(tokens[:10])
 
     except Exception as e:
+        print("🔥 Exception in /trending:", str(e))
         return jsonify({"error": str(e)}), 500
+
 
 
 
