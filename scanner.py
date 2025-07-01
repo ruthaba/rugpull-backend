@@ -2,7 +2,12 @@ import random
 import requests
 from datetime import datetime
 
-ETHERSCAN_API_KEY = "N86WUX9HW4QSUSZBY88945CQYXAHURNUCX"
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+ETHERSCAN_API_KEY = os.getenv("ETHERSCAN_API_KEY")
+
 
 def check_dev_wallet_movements(contract_address):
     try:
