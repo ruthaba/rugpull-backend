@@ -116,7 +116,14 @@ def analyze_token(contract_address):
         "prediction": prediction_msg
     }
 
-    actionable = ["DO NOT BUY this token!"]
+    #actionable = ["DO NOT BUY this token!"]
+    if mock_score > 85:
+        actionable = ["🛑 DO NOT BUY this token!"]
+    elif mock_score > 70:
+        actionable = ["⚠️ Caution: Risk signals detected — proceed at your own risk."]
+    else:
+        actionable = ["✅ This token shows no major red flags."]
+
     similar_scams = ["Similar to Squid Game Token before collapse in 2021."]
 
     return {
